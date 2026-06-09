@@ -1,338 +1,466 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <meta name="description" content="A love story written in starlight — made only for you." />
-  <meta name="theme-color" content="#030008" />
-  <title>Timothy. — you are my favorite universe</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
+    <meta
+      name="description"
+      content="A love story written in starlight — made only for you."
+    />
+    <meta name="theme-color" content="#030008" />
+    <title>Timothy. — you are my favorite universe</title>
 
-  <!-- Preconnect -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
+    <!-- Preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
 
-  <!-- Stylesheets -->
-  <link rel="stylesheet" href="css/style.css" />
-  <link rel="stylesheet" href="css/effects.css" />
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/effects.css" />
 
-  <style>
-    /* Critical above-fold paint */
-    html { background: #030008; }
-  </style>
-</head>
-<body>
+    <style>
+      /* Critical above-fold paint */
+      html {
+        background: #030008;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ─── CURSOR ──────────────────────────────────────────── -->
+    <div class="cursor" aria-hidden="true"></div>
+    <div class="cursor-follower" aria-hidden="true"></div>
 
-  <!-- ─── CURSOR ──────────────────────────────────────────── -->
-  <div class="cursor" aria-hidden="true"></div>
-  <div class="cursor-follower" aria-hidden="true"></div>
+    <!-- ─── FIXED LAYERS ────────────────────────────────────── -->
+    <canvas id="galaxy-canvas" aria-hidden="true"></canvas>
+    <canvas id="three-canvas" aria-hidden="true"></canvas>
+    <canvas id="particle-canvas" aria-hidden="true"></canvas>
+    <div class="grain-overlay" aria-hidden="true"></div>
+    <div class="noise-overlay" aria-hidden="true"></div>
+    <div class="scroll-progress" aria-hidden="true"></div>
 
-  <!-- ─── FIXED LAYERS ────────────────────────────────────── -->
-  <canvas id="galaxy-canvas" aria-hidden="true"></canvas>
-  <canvas id="three-canvas" aria-hidden="true"></canvas>
-  <canvas id="particle-canvas" aria-hidden="true"></canvas>
-  <div class="grain-overlay" aria-hidden="true"></div>
-  <div class="noise-overlay" aria-hidden="true"></div>
-  <div class="scroll-progress" aria-hidden="true"></div>
+    <!-- ─── PRELOADER ───────────────────────────────────────── -->
+    <div id="preloader" role="progressbar" aria-label="Loading experience">
+      <div class="preloader__bg"></div>
+      <div class="preloader__rings">
+        <div class="preloader__ring-outer"></div>
+        <div class="preloader__ring-mid"></div>
+      </div>
 
-  <!-- ─── PRELOADER ───────────────────────────────────────── -->
-  <div id="preloader" role="progressbar" aria-label="Loading experience">
-    <div class="preloader__bg"></div>
-    <div class="preloader__rings">
-      <div class="preloader__ring-outer"></div>
-      <div class="preloader__ring-mid"></div>
-    </div>
-
-    <div class="preloader__content">
-      <span class="preloader__heart">♡</span>
-      <div class="preloader__ring" aria-hidden="true"></div>
-      <p class="preloader__quote"></p>
-      <div>
-        <div class="preloader__bar">
-          <div class="preloader__bar-fill"></div>
+      <div class="preloader__content">
+        <span class="preloader__heart">♡</span>
+        <div class="preloader__ring" aria-hidden="true"></div>
+        <p class="preloader__quote"></p>
+        <div>
+          <div class="preloader__bar">
+            <div class="preloader__bar-fill"></div>
+          </div>
+          <span class="preloader__percent">0%</span>
         </div>
-        <span class="preloader__percent">0%</span>
       </div>
     </div>
-  </div>
 
-  <!-- ─── NAVIGATION ──────────────────────────────────────── -->
-  <nav class="nav" aria-label="Main navigation">
-    <a href="#hero" class="nav__logo">Timothy.</a>
-    <ul class="nav__links" role="list">
-      <li><a href="#timeline" class="hover-line">Cerita</a></li>
-      <li><a href="#gallery" class="hover-line">Galeri</a></li>
-      <li><a href="#love-letter" class="hover-line">Surat</a></li>
-      <li><a href="#finale" class="hover-line">Penutup</a></li>
-    </ul>
-  </nav>
+    <!-- ─── NAVIGATION ──────────────────────────────────────── -->
+    <nav class="nav" aria-label="Main navigation">
+      <a href="#hero" class="nav__logo">Timothy.</a>
+      <ul class="nav__links" role="list">
+        <li><a href="#timeline" class="hover-line">Cerita</a></li>
+        <li><a href="#gallery" class="hover-line">Galeri</a></li>
+        <li><a href="#love-letter" class="hover-line">Surat</a></li>
+        <li><a href="#finale" class="hover-line">Penutup</a></li>
+      </ul>
+    </nav>
 
-  <!-- ─── NAV DOTS ─────────────────────────────────────────── -->
-  <nav class="nav-dots" aria-label="Section navigation"></nav>
+    <!-- ─── NAV DOTS ─────────────────────────────────────────── -->
+    <nav class="nav-dots" aria-label="Section navigation"></nav>
 
-  <!-- ─── AUDIO PLAYER (injected by audio-system.js) ──────── -->
+    <!-- ─── AUDIO PLAYER (injected by audio-system.js) ──────── -->
 
-  <!-- ════════════════════════════════════════════════════════
+    <!-- ════════════════════════════════════════════════════════
        MAIN EXPERIENCE
        ════════════════════════════════════════════════════════ -->
-  <main>
+    <main>
+      <!-- ─── HERO ──────────────────────────────────────────── -->
+      <section class="hero" id="hero" data-scene="hero">
+        <div class="hero__particles" aria-hidden="true"></div>
 
-    <!-- ─── HERO ──────────────────────────────────────────── -->
-    <section class="hero" id="hero" data-scene="hero">
-      <div class="hero__particles" aria-hidden="true"></div>
+        <div class="hero__inner">
+          <div class="hero__badge">
+            <span>Cerita cinta, disampaikan dalam cahaya bintang</span>
+          </div>
 
-      <div class="hero__inner">
-        <div class="hero__badge">
-          <span>Cerita cinta, disampaikan dalam cahaya bintang</span>
+          <h1 class="hero__headline t-hero glow-text">
+            <span class="line">Happy Birthday</span>
+            <span class="line"><em>Sayang</em></span>
+          </h1>
+
+          <p class="hero__sub">
+            Setiap bintang ditempatkan untuk akhirnya membawaku ke sini. Setiap
+            jalan yang salah — latihan tenang untuk menemukanmu.
+          </p>
+
+          <div class="hero__cta">
+            <a href="#timeline" class="btn btn-primary" data-magnetic>
+              Masuk ke Cerita
+            </a>
+            <a href="#love-letter" class="btn btn-ghost" data-magnetic>
+              Baca Surat
+            </a>
+          </div>
         </div>
 
-        <h1 class="hero__headline t-hero glow-text">
-          <span class="line">You are my</span>
-          <span class="line"><em>favorite</em> universe.</span>
-        </h1>
-
-        <p class="hero__sub">
-          Setiap bintang ditempatkan untuk akhirnya membawaku ke sini.
-          Setiap jalan yang salah — latihan tenang untuk menemukanmu.
-        </p>
-
-        <div class="hero__cta">
-          <a href="#timeline" class="btn btn-primary" data-magnetic>
-            Masuk ke Cerita
-          </a>
-          <a href="#love-letter" class="btn btn-ghost" data-magnetic>
-            Baca Surat
-          </a>
-        </div>
-      </div>
-
-      <div class="hero__scroll-hint" aria-hidden="true">
-        <span>gulir</span>
-        <div class="hero__scroll-arrow"></div>
-      </div>
-
-      <!-- Decorative orbs -->
-      <div class="orb-decoration orb-violet" style="width:600px;height:600px;top:-20%;right:-15%;opacity:0.5;"></div>
-      <div class="orb-decoration orb-pink" style="width:400px;height:400px;bottom:-10%;left:-8%;opacity:0.4;"></div>
-    </section>
-
-    <!-- ─── TIMELINE ──────────────────────────────────────── -->
-    <section class="timeline" id="timeline" data-scene="timeline">
-      <div class="section-number" aria-hidden="true">01</div>
-      <div class="container">
-        <header class="section-header">
-          <p class="t-label section-header__eyebrow" data-reveal="fade-up">
-            Bagaimana semuanya dimulai
-          </p>
-          <div class="section-divider"></div>
-          <h2 class="t-section-title section-header__title" data-reveal="fade-up">
-            Cerita<br /><em style="font-style:italic;color:var(--clr-pink-soft);">Sejauh Ini</em>
-          </h2>
-          <p class="section-header__desc t-body" data-reveal="fade-up">
-            Beberapa kisah cinta tidak memiliki awal yang bersih.
-            Cerita kami dimulai sebagai kebetulan yang tenang — dan perlahan menjadi hal paling disengaja yang pernah aku pilih.
-          </p>
-        </header>
-
-        <div class="timeline__inner">
-          <div class="timeline__glow-line" aria-hidden="true"></div>
-          <div class="timeline__items"></div>
-          <!-- Items injected by JS -->
-        </div>
-      </div>
-
-      <div class="orb-decoration orb-blue" style="width:500px;height:500px;top:30%;left:-10%;opacity:0.3;"></div>
-    </section>
-
-    <!-- ─── GALLERY ───────────────────────────────────────── -->
-    <section class="gallery" id="gallery" data-scene="gallery">
-      <div class="section-number" aria-hidden="true">02</div>
-      <div class="container">
-        <header class="section-header">
-          <p class="t-label section-header__eyebrow" data-reveal="fade-up">
-            Dia adalah koleksi lengkapnya
-          </p>
-          <div class="section-divider"></div>
-          <h2 class="t-section-title section-header__title" data-reveal="fade-up">
-            Setiap bingkai<br /><em style="font-style:italic;color:var(--clr-violet-soft);">adalah dirinya</em>
-          </h2>
-          <p class="section-header__desc t-body" data-reveal="fade-up">
-            Aku menyimpan semuanya. Yang tenang. Yang tidak direncanakan.
-            Terutama yang tidak dia tahu aku sudah terpesona padanya.
-          </p>
-        </header>
-
-        <div class="gallery__grid" role="list">
-
-          <!-- ─── FOTO 1 ── ganti src dengan path foto kamu ── -->
-          <div class="gallery__card" data-reveal="fade-up">
-            <div class="gallery__card-inner">
-              <img class="gallery__photo" src="assets/images/img1.jpeg" alt="foto 1" loading="lazy" />
-              <div class="gallery__caption">
-                <span class="gallery__caption-text">Dia bersinar tanpa usaha — dan itulah hal paling menakjubkan tentang dirinya.</span>
-                <span class="gallery__caption-tag">#tanpa usaha</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- ─── FOTO 2 ── -->
-          <div class="gallery__card" data-reveal="fade-up">
-            <div class="gallery__card-inner">
-              <img class="gallery__photo" src="assets/images/img2.jpeg" alt="foto 2" loading="lazy" />
-              <div class="gallery__caption">
-                <span class="gallery__caption-text">Jenis kecantikan yang tidak meminta izin untuk mengambil napasmu.</span>
-                <span class="gallery__caption-tag">#tak terbantahkan</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- ─── FOTO 3 ── -->
-          <div class="gallery__card" data-reveal="fade-up">
-            <div class="gallery__card-inner">
-              <img class="gallery__photo" src="assets/images/img3.jpeg" alt="foto 3" loading="lazy" />
-              <div class="gallery__caption">
-                <span class="gallery__caption-text">Tawanya — satu-satunya suara yang membuat setiap ruangan sunyi terasa hidup.</span>
-                <span class="gallery__caption-tag">#semuanya</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- ─── FOTO 4 ── -->
-          <div class="gallery__card" data-reveal="fade-up">
-            <div class="gallery__card-inner">
-              <img class="gallery__photo" src="assets/images/img4.jpeg" alt="foto 4" loading="lazy" />
-              <div class="gallery__caption">
-                <span class="gallery__caption-text">Aku telah mengingat cara dia membawa diri — dengan lembut, dan dengan begitu banyak keanggunan.</span>
-                <span class="gallery__caption-tag">#tak terbatas</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- ─── FOTO 5 ── -->
-          <div class="gallery__card" data-reveal="fade-up">
-            <div class="gallery__card-inner">
-              <img class="gallery__photo" src="assets/images/img5.jpeg" alt="foto 5" loading="lazy" />
-              <div class="gallery__caption">
-                <span class="gallery__caption-text">Cahaya keemasan, dunia yang lembut — dan entah bagaimana, dia masih hal yang paling bercahaya di dalamnya.</span>
-                <span class="gallery__caption-tag">#bercahaya</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- ─── FOTO 6 ── -->
-          <div class="gallery__card" data-reveal="fade-up">
-            <div class="gallery__card-inner">
-              <img class="gallery__photo" src="assets/images/img6.jpeg" alt="foto 6" loading="lazy" />
-              <div class="gallery__caption">
-                <span class="gallery__caption-text">Dia adalah alasan aku percaya beberapa hal cukup layak untuk didedikasikan.</span>
-                <span class="gallery__caption-tag">#dedikasi</span>
-              </div>
-            </div>
-          </div>
-
+        <div class="hero__scroll-hint" aria-hidden="true">
+          <span>gulir</span>
+          <div class="hero__scroll-arrow"></div>
         </div>
 
-        <div style="text-align:center;margin-top:clamp(40px,6vw,72px);">
-          <p class="t-quote" data-reveal="scale" style="max-width:600px;margin:0 auto;color:var(--clr-white-40);">
-            "Dia bukan hanya foto. Dia adalah alasan aku mengambilnya."
-          </p>
+        <!-- Decorative orbs -->
+        <div
+          class="orb-decoration orb-violet"
+          style="
+            width: 600px;
+            height: 600px;
+            top: -20%;
+            right: -15%;
+            opacity: 0.5;
+          "
+        ></div>
+        <div
+          class="orb-decoration orb-pink"
+          style="
+            width: 400px;
+            height: 400px;
+            bottom: -10%;
+            left: -8%;
+            opacity: 0.4;
+          "
+        ></div>
+      </section>
+
+      <!-- ─── TIMELINE ──────────────────────────────────────── -->
+      <section class="timeline" id="timeline" data-scene="timeline">
+        <div class="section-number" aria-hidden="true">01</div>
+        <div class="container">
+          <header class="section-header">
+            <p class="t-label section-header__eyebrow" data-reveal="fade-up">
+              Bagaimana semuanya dimulai
+            </p>
+            <div class="section-divider"></div>
+            <h2
+              class="t-section-title section-header__title"
+              data-reveal="fade-up"
+            >
+              Cerita<br /><em
+                style="font-style: italic; color: var(--clr-pink-soft)"
+                >Sejauh Ini</em
+              >
+            </h2>
+            <p class="section-header__desc t-body" data-reveal="fade-up">
+              Beberapa kisah cinta tidak memiliki awal yang bersih. Cerita kami
+              dimulai sebagai kebetulan yang tenang — dan perlahan menjadi hal
+              paling disengaja yang pernah aku pilih.
+            </p>
+          </header>
+
+          <div class="timeline__inner">
+            <div class="timeline__glow-line" aria-hidden="true"></div>
+            <div class="timeline__items"></div>
+            <!-- Items injected by JS -->
+          </div>
         </div>
-      </div>
 
-      <div class="orb-decoration orb-pink" style="width:600px;height:600px;bottom:-10%;right:-10%;opacity:0.35;"></div>
-    </section>
+        <div
+          class="orb-decoration orb-blue"
+          style="
+            width: 500px;
+            height: 500px;
+            top: 30%;
+            left: -10%;
+            opacity: 0.3;
+          "
+        ></div>
+      </section>
 
-    <!-- ─── LOVE LETTER ───────────────────────────────────── -->
-    <section class="love-letter" id="love-letter" data-scene="love-letter">
-      <div class="section-number" aria-hidden="true">03</div>
-      <div class="letter__spotlight" aria-hidden="true"></div>
+      <!-- ─── GALLERY ───────────────────────────────────────── -->
+      <section class="gallery" id="gallery" data-scene="gallery">
+        <div class="section-number" aria-hidden="true">02</div>
+        <div class="container">
+          <header class="section-header">
+            <p class="t-label section-header__eyebrow" data-reveal="fade-up">
+              Dia adalah koleksi lengkapnya
+            </p>
+            <div class="section-divider"></div>
+            <h2
+              class="t-section-title section-header__title"
+              data-reveal="fade-up"
+            >
+              Setiap bingkai<br /><em
+                style="font-style: italic; color: var(--clr-violet-soft)"
+                >adalah dirinya</em
+              >
+            </h2>
+            <p class="section-header__desc t-body" data-reveal="fade-up">
+              Aku menyimpan semuanya. Yang tenang. Yang tidak direncanakan.
+              Terutama yang tidak dia tahu aku sudah terpesona padanya.
+            </p>
+          </header>
 
-      <div class="love-letter__inner">
-        <header class="section-header">
-          <p class="t-label section-header__eyebrow" data-reveal="fade-up">
-            Ditulis jam 2 pagi, untuk selamanya
-          </p>
-          <div class="section-divider"></div>
-          <h2 class="t-section-title section-header__title" data-reveal="fade-up">
-            Hal-hal yang kupendam<br /><em style="font-style:italic;color:var(--clr-pink-soft);">dalam diam</em>
-          </h2>
-        </header>
+          <div class="gallery__grid" role="list">
+            <!-- ─── FOTO 1 ── ganti src dengan path foto kamu ── -->
+            <div class="gallery__card" data-reveal="fade-up">
+              <div class="gallery__card-inner">
+                <img
+                  class="gallery__photo"
+                  src="assets/images/img1.jpeg"
+                  alt="foto 1"
+                  loading="lazy"
+                />
+                <div class="gallery__caption">
+                  <span class="gallery__caption-text"
+                    >Dia bersinar tanpa usaha — dan itulah hal paling
+                    menakjubkan tentang dirinya.</span
+                  >
+                  <span class="gallery__caption-tag">#tanpa usaha</span>
+                </div>
+              </div>
+            </div>
 
-        <div class="love-letter__paper glass-card">
-          <span class="letter__salutation">Untuk Timothy, selamanya —</span>
+            <!-- ─── FOTO 2 ── -->
+            <div class="gallery__card" data-reveal="fade-up">
+              <div class="gallery__card-inner">
+                <img
+                  class="gallery__photo"
+                  src="assets/images/img2.jpeg"
+                  alt="foto 2"
+                  loading="lazy"
+                />
+                <div class="gallery__caption">
+                  <span class="gallery__caption-text"
+                    >Jenis kecantikan yang tidak meminta izin untuk mengambil
+                    napasmu.</span
+                  >
+                  <span class="gallery__caption-tag">#tak terbantahkan</span>
+                </div>
+              </div>
+            </div>
 
-          <div class="letter__body">
-            <p>
-              Selamat ulang tahun manusia favoritku! Semoga umur baru ini bawa banyak tawa, kedamaian, dan hal baik buat kamu. Makasih udah lahir ke dunia dan selalu menyinari hidupku. Jangan bosan-bosan, i love you so much sayang GBU
+            <!-- ─── FOTO 3 ── -->
+            <div class="gallery__card" data-reveal="fade-up">
+              <div class="gallery__card-inner">
+                <img
+                  class="gallery__photo"
+                  src="assets/images/img3.jpeg"
+                  alt="foto 3"
+                  loading="lazy"
+                />
+                <div class="gallery__caption">
+                  <span class="gallery__caption-text"
+                    >Tawanya — satu-satunya suara yang membuat setiap ruangan
+                    sunyi terasa hidup.</span
+                  >
+                  <span class="gallery__caption-tag">#semuanya</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- ─── FOTO 4 ── -->
+            <div class="gallery__card" data-reveal="fade-up">
+              <div class="gallery__card-inner">
+                <img
+                  class="gallery__photo"
+                  src="assets/images/img4.jpeg"
+                  alt="foto 4"
+                  loading="lazy"
+                />
+                <div class="gallery__caption">
+                  <span class="gallery__caption-text"
+                    >Aku telah mengingat cara dia membawa diri — dengan lembut,
+                    dan dengan begitu banyak keanggunan.</span
+                  >
+                  <span class="gallery__caption-tag">#tak terbatas</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- ─── FOTO 5 ── -->
+            <div class="gallery__card" data-reveal="fade-up">
+              <div class="gallery__card-inner">
+                <img
+                  class="gallery__photo"
+                  src="assets/images/img5.jpeg"
+                  alt="foto 5"
+                  loading="lazy"
+                />
+                <div class="gallery__caption">
+                  <span class="gallery__caption-text"
+                    >Cahaya keemasan, dunia yang lembut — dan entah bagaimana,
+                    dia masih hal yang paling bercahaya di dalamnya.</span
+                  >
+                  <span class="gallery__caption-tag">#bercahaya</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- ─── FOTO 6 ── -->
+            <div class="gallery__card" data-reveal="fade-up">
+              <div class="gallery__card-inner">
+                <img
+                  class="gallery__photo"
+                  src="assets/images/img6.jpeg"
+                  alt="foto 6"
+                  loading="lazy"
+                />
+                <div class="gallery__caption">
+                  <span class="gallery__caption-text"
+                    >Dia adalah alasan aku percaya beberapa hal cukup layak
+                    untuk didedikasikan.</span
+                  >
+                  <span class="gallery__caption-tag">#dedikasi</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div style="text-align: center; margin-top: clamp(40px, 6vw, 72px)">
+            <p
+              class="t-quote"
+              data-reveal="scale"
+              style="
+                max-width: 600px;
+                margin: 0 auto;
+                color: var(--clr-white-40);
+              "
+            >
+              "Dia bukan hanya foto. Dia adalah alasan aku mengambilnya."
             </p>
           </div>
-
-          <span class="letter__sign">— denganmu, selamanya.</span>
         </div>
-      </div>
 
-      <div class="orb-decoration orb-violet" style="width:700px;height:700px;top:-20%;left:-15%;opacity:0.25;"></div>
-    </section>
+        <div
+          class="orb-decoration orb-pink"
+          style="
+            width: 600px;
+            height: 600px;
+            bottom: -10%;
+            right: -10%;
+            opacity: 0.35;
+          "
+        ></div>
+      </section>
 
-    <!-- ─── FINALE ────────────────────────────────────────── -->
-    <section class="finale" id="finale" data-scene="finale">
-      <div class="finale__bg-glow" aria-hidden="true"></div>
+      <!-- ─── LOVE LETTER ───────────────────────────────────── -->
+      <section class="love-letter" id="love-letter" data-scene="love-letter">
+        <div class="section-number" aria-hidden="true">03</div>
+        <div class="letter__spotlight" aria-hidden="true"></div>
 
-      <div class="finale__inner">
-        <span class="finale__heart" aria-hidden="true">♡</span>
-        <h2 class="finale__quote t-hero glow-text">
-          Setiap garis waktu<br />membawaku kembali<br /><em>ke dirinya.</em>
-        </h2>
-        <p class="finale__sub t-label" style="margin-top:40px;">
-          Akhir hanyalah permulaan lain
-        </p>
+        <div class="love-letter__inner">
+          <header class="section-header">
+            <p class="t-label section-header__eyebrow" data-reveal="fade-up">
+              Ditulis jam 2 pagi, untuk selamanya
+            </p>
+            <div class="section-divider"></div>
+            <h2
+              class="t-section-title section-header__title"
+              data-reveal="fade-up"
+            >
+              Hal-hal yang kupendam<br /><em
+                style="font-style: italic; color: var(--clr-pink-soft)"
+                >dalam diam</em
+              >
+            </h2>
+          </header>
 
-        <div style="margin-top:60px;">
-          <a href="#hero" class="btn btn-primary pulse-glow" data-magnetic>
-            Mulai Lagi ♡
-          </a>
+          <div class="love-letter__paper glass-card">
+            <span class="letter__salutation">Untuk Timothy, selamanya —</span>
+
+            <div class="letter__body">
+              <p>
+                Selamat ulang tahun manusia favoritku! Semoga umur baru ini bawa
+                banyak tawa, kedamaian, dan hal baik buat kamu. Makasih udah
+                lahir ke dunia dan selalu menyinari hidupku. Jangan bosan-bosan,
+                i love you so much sayang GBU
+              </p>
+            </div>
+
+            <span class="letter__sign">— denganmu, selamanya.</span>
+          </div>
         </div>
-      </div>
-    </section>
 
-  </main>
+        <div
+          class="orb-decoration orb-violet"
+          style="
+            width: 700px;
+            height: 700px;
+            top: -20%;
+            left: -15%;
+            opacity: 0.25;
+          "
+        ></div>
+      </section>
 
-  <!-- ─── FOOTER ────────────────────────────────────────────── -->
-  <footer>
-    <p>made with devotion &amp; too many sleepless nights &nbsp;·&nbsp; Timothy. ♡</p>
-  </footer>
+      <!-- ─── FINALE ────────────────────────────────────────── -->
+      <section class="finale" id="finale" data-scene="finale">
+        <div class="finale__bg-glow" aria-hidden="true"></div>
 
-  <!-- ════════════════════════════════════════════════════════
+        <div class="finale__inner">
+          <span class="finale__heart" aria-hidden="true">♡</span>
+          <h2 class="finale__quote t-hero glow-text">
+            Setiap garis waktu<br />membawaku kembali<br /><em>ke dirinya.</em>
+          </h2>
+          <p class="finale__sub t-label" style="margin-top: 40px">
+            Akhir hanyalah permulaan lain
+          </p>
+
+          <div style="margin-top: 60px">
+            <a href="#hero" class="btn btn-primary pulse-glow" data-magnetic>
+              Mulai Lagi ♡
+            </a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- ─── FOOTER ────────────────────────────────────────────── -->
+    <footer>
+      <p>
+        made with devotion &amp; too many sleepless nights &nbsp;·&nbsp;
+        Timothy. ♡
+      </p>
+    </footer>
+
+    <!-- ════════════════════════════════════════════════════════
        SCRIPTS
        ════════════════════════════════════════════════════════ -->
 
-  <!-- CDN Libraries -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/TextPlugin.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/CustomEase.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+    <!-- CDN Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/TextPlugin.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/CustomEase.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
 
-  <!-- Core -->
-  <script src="js/core/config.js"></script>
-  <script src="js/core/state.js"></script>
-  <script src="js/core/app-controller.js"></script>
+    <!-- Core -->
+    <script src="js/core/config.js"></script>
+    <script src="js/core/state.js"></script>
+    <script src="js/core/app-controller.js"></script>
 
-  <!-- Systems -->
-  <script src="js/systems/performance.js"></script>
-  <script src="js/systems/galaxy-background.js"></script>
-  <script src="js/systems/three-background.js"></script>
-  <script src="js/systems/preloader.js"></script>
-  <script src="js/systems/audio-system.js"></script>
+    <!-- Systems -->
+    <script src="js/systems/performance.js"></script>
+    <script src="js/systems/galaxy-background.js"></script>
+    <script src="js/systems/three-background.js"></script>
+    <script src="js/systems/preloader.js"></script>
+    <script src="js/systems/audio-system.js"></script>
 
-  <!-- Engine -->
-  <script src="js/engine/animation-engine.js"></script>
-  <script src="js/engine/scene-manager.js"></script>
-  <script src="js/engine/interaction-engine.js"></script>
+    <!-- Engine -->
+    <script src="js/engine/animation-engine.js"></script>
+    <script src="js/engine/scene-manager.js"></script>
+    <script src="js/engine/interaction-engine.js"></script>
 
-  <!-- Main -->
-  <script src="js/main/script.js"></script>
-
-</body>
+    <!-- Main -->
+    <script src="js/main/script.js"></script>
+  </body>
 </html>
